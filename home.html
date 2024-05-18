@@ -87,7 +87,7 @@
       const row = document.createElement('tr');
 
       const idCell = document.createElement('td');
-      idCell.textContent = data.id;
+      idCell.textContent = data.id_pasien;
       row.appendChild(idCell);
 
       const nameCell = document.createElement('td');
@@ -135,7 +135,7 @@
         deleteButton.addEventListener('click', async () => {
           
           try {
-            await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${pasien.id}`, config);
+            await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${data.id_pasien}`, config);
             row.remove();
             alert('Patient deleted successfully');
           } catch (error) {
