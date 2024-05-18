@@ -96,44 +96,48 @@
     
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const form = document.querySelector('form');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.querySelector('#name').value;
-            const age = document.querySelector('#age').value;
-            const gender = document.querySelector('#gender').value;
-            const phone = document.querySelector('#phone').value;
-            const complain = document.querySelector('#complain').value;
-            const doctor = document.querySelector('#doctor').value;
-            const consultation = document.querySelector('#consultation').value;
+document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        window.location.href = '/';
+        return;
+    }
 
-            const patient = {
-                name,
-                age,
-                gender,
-                phone,
-                complain,
-                doctor,
-                consultation
-            };
+    const apiUrl = 'https://auth-admin-dot-ammar-145.et.r.appspot.com/data';
 
-            fetch('/api/patients', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(patient)
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                alert('Patient added successfully');
-                form.reset();
-            })
-            .catch(err => console.error(err));
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const formData = {
+            name: document.getElementById('name').value,
+            age: document.getElementById('age').value,
+            gender: document.getElementById('gender').value,
+            phone: document.getElementById('phone').value,
+            complain: document.getElementById('complain').value,
+            doctor: document.getElementById('doctor').value,
+            consultation: document.getElementById('consultation').value
+        };
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert('Patient added successfully');
+            window.location.href = '/home';
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menyimpan data');
         });
     });
+});
 </script>
 </body>
 </html>
