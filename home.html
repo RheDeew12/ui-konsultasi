@@ -46,9 +46,8 @@
           <th class="px-4 py-2">Gender</th>
           <th class="px-4 py-2">Phone</th>
           <th class="px-4 py-2">Complain</th>
-          <th class="px-4 py-2">Doctor</th>
-          <th class="px-4 py-2">Consultation</th>
-          <th class="px-4 py-2">Actions</th>
+          <th class="px-4 py-2">Consultation With</th>
+          <th class="px-4 py-2">Time</th>
         </tr>
       </thead>
       <tbody id="patient-list">
@@ -92,31 +91,31 @@
       row.appendChild(idCell);
 
       const nameCell = document.createElement('td');
-      nameCell.textContent = data.nama;
+      nameCell.textContent = data.nama_pasien;
       row.appendChild(nameCell);
 
       const ageCell = document.createElement('td');
-      ageCell.textContent = data.age;
+      ageCell.textContent = data.umur;
       row.appendChild(ageCell);
 
       const genderCell = document.createElement('td');
-      genderCell.textContent = data.gender;
+      genderCell.textContent = data.jenis_kelamin;
       row.appendChild(genderCell);
 
       const phoneCell = document.createElement('td');
-      phoneCell.textContent = data.phone;
+      phoneCell.textContent = data.no_telp_pasien;
       row.appendChild(phoneCell);
 
       const complainCell = document.createElement('td');
-      complainCell.textContent = data.complain;
+      complainCell.textContent = data.keluhan;
       row.appendChild(complainCell);
 
-      const doctorCell = document.createElement('td');
-      doctorCell.textContent = data.doctor;
-      row.appendChild(doctorCell);
+      const consultationCell = document.createElement('td');
+      consultationCell.textContent = data.konsultasi_dokter;
+      row.appendChild(consultationCell);
 
       const consultationCell = document.createElement('td');
-      consultationCell.textContent = data.consultation;
+      consultationCell.textContent = data.jam_konsultasi;
       row.appendChild(consultationCell);
 
       const actionsCell = document.createElement('td');
