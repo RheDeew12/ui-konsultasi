@@ -114,7 +114,7 @@
         const response = await axios.get(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${id_pasien}`, config);
         const patient = response.data;
 
-        document.querySelector('#patient-id').value = patient.id;
+        document.querySelector('#patient-id').value = patient.id_pasien;
         document.querySelector('#name').value = patient.nama_pasien;
         document.querySelector('#age').value = patient.umur;
         document.querySelector('#gender').value = patient.jenis_kelamin;
