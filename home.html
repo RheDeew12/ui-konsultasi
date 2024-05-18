@@ -75,7 +75,7 @@
   };
 
   try {
-    const response = await axios.get('https://auth-admin-dot-ammar-145.et.r.appspot.com/data', config);
+    const response = await axios.get('https://crud-data-dot-ammar-145.et.r.appspot.com/pasien', config);
     const dataList = response.data;
 
     const tbody = document.querySelector('#patient-list');
@@ -133,7 +133,7 @@
         deleteButton.addEventListener('click', async () => {
           
           try {
-            await axios.delete(`https://auth-admin-dot-ammar-145.et.r.appspot.com/data/${data.id}`, config);
+            await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${pasien.id}`, config);
             row.remove();
             alert('Patient deleted successfully');
           } catch (error) {
