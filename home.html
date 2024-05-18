@@ -57,110 +57,101 @@
   </div>
 
     <script>
+
     async function logout() {
       localStorage.removeItem('authToken');
       window.location.href = '/';
     }
-
+    
     document.addEventListener('DOMContentLoaded', async () => {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        window.location.href = '/';
-        return;
-      }
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    window.location.href = '/';
+    return;
+  }
 
-      const config = {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      };
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
 
-      async function fetchData() {
-        try {
-          const response = await axios.get('https://crud-data-dot-ammar-145.et.r.appspot.com/pasien', config);
-          const dataList = response.data;
-          populateTable(dataList);
-        } catch (error) {
-          console.error('Failed to fetch data:', error.response ? error.response.data.message : error.message);
-        }
-      }
+  try {
+    const response = await axios.get('https://crud-data-dot-ammar-145.et.r.appspot.com/pasien', config);
+    const dataList = response.data;
 
-      function populateTable(dataList) {
-        const tbody = document.querySelector('#patient-list');
-        tbody.innerHTML = ''; // Clear the table body before populating it
+    const tbody = document.querySelector('#patient-list');
+    tbody.innerHTML = ''; // Clear the table body before populating it
 
-        dataList.forEach(data => {
-          const row = document.createElement('tr');
+    dataList.forEach(data => {
+      const row = document.createElement('tr');
 
-          const idCell = document.createElement('td');
-          idCell.textContent = data.id_pasien;
-          row.appendChild(idCell);
+      const idCell = document.createElement('td');
+      idCell.textContent = data.id_pasien;
+      row.appendChild(idCell);
 
-          const nameCell = document.createElement('td');
-          nameCell.textContent = data.nama_pasien;
-          row.appendChild(nameCell);
+      const nameCell = document.createElement('td');
+      nameCell.textContent = data.nama_pasien;
+      row.appendChild(nameCell);
 
-          const ageCell = document.createElement('td');
-          ageCell.textContent = data.umur;
-          row.appendChild(ageCell);
+      const ageCell = document.createElement('td');
+      ageCell.textContent = data.umur;
+      row.appendChild(ageCell);
 
-          const genderCell = document.createElement('td');
-          genderCell.textContent = data.jenis_kelamin;
-          row.appendChild(genderCell);
+      const genderCell = document.createElement('td');
+      genderCell.textContent = data.jenis_kelamin;
+      row.appendChild(genderCell);
 
-          const phoneCell = document.createElement('td');
-          phoneCell.textContent = data.no_telp_pasien;
-          row.appendChild(phoneCell);
+      const phoneCell = document.createElement('td');
+      phoneCell.textContent = data.no_telp_pasien;
+      row.appendChild(phoneCell);
 
-          const complainCell = document.createElement('td');
-          complainCell.textContent = data.keluhan;
-          row.appendChild(complainCell);
+      const complainCell = document.createElement('td');
+      complainCell.textContent = data.keluhan;
+      row.appendChild(complainCell);
 
-          const consultationCell = document.createElement('td');
-          consultationCell.textContent = data.konsultasi_dokter;
-          row.appendChild(consultationCell);
+      const consultationCell = document.createElement('td');
+      consultationCell.textContent = data.konsultasi_dokter;
+      row.appendChild(consultationCell);
 
-          const timeCell = document.createElement('td');
-          timeCell.textContent = data.jam_konsultasi;
-          row.appendChild(timeCell);
+      const timeCell = document.createElement('td');
+      consultationCell.textContent = data.jam_konsultasi;
+      row.appendChild(timeCell);
 
-          const actionsCell = document.createElement('td');
+      const actionsCell = document.createElement('td');
 
-          const updateButton = document.createElement('button');
-          updateButton.textContent = 'Update';
-          updateButton.classList.add('bg-orange-500', 'hover:bg-orange-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
-          updateButton.addEventListener('click', () => {
-            const patientId = idCell.textContent;
-            window.location.href = `update/${patientId}`;
+      const updateButton = document.createElement('button');
+      updateButton.textContent = 'Update';
+      updateButton.classList.add('bg-orange-500', 'hover:bg-orange-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
+      updateButton.addEventListener('click', () => {
+      const patientId = idCell.textContent;
+      window.location.href = `update/${patientId}`;
+      });
+      actionsCell.appendChild(updateButton);
+
+      const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
+        deleteButton.addEventListener('click', async () => {
+          
+          try {
+            await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${data.id_pasien}`, config);
+            row.remove();
+            alert('Patient deleted successfully');
+          } catch (error) {
+            console.error('Failed to delete patient:', error.response ? error.response.data.message : error.message);
+          }
           });
-          actionsCell.appendChild(updateButton);
+      actionsCell.appendChild(deleteButton);
 
-          const deleteButton = document.createElement('button');
-          deleteButton.textContent = 'Delete';
-          deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
-          deleteButton.addEventListener('click', async () => {
-            try {
-              await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${data.id_pasien}`, config);
-              row.remove();
-              alert('Patient deleted successfully');
-            } catch (error) {
-              console.error('Failed to delete patient:', error.response ? error.response.data.message : error.message);
-            }
-          });
-          actionsCell.appendChild(deleteButton);
+      row.appendChild(actionsCell);
 
-          row.appendChild(actionsCell);
-
-          tbody.appendChild(row);
-        });
-      }
-
-      // Fetch data initially
-      fetchData();
-
-      // Optionally, you can set an interval to refresh the data periodically
-      // setInterval(fetchData, 60000); // Refresh data every 60 seconds
+      tbody.appendChild(row);
     });
+  } catch (error) {
+    console.error('Failed to fetch data:', error.response ? error.response.data.message : error.message);
+  }
+});
   </script>
   
 </body>
