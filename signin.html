@@ -37,8 +37,8 @@ document.getElementById('sign-in-form').addEventListener('submit', async (e) => 
 
     try {
         const response = await axios.post('https://auth-admin-dot-ammar-145.et.r.appspot.com/admin/login', {
-            username, // Changed from 'email' to 'name'
-            password
+            username: name,
+            password: password
         });
 
         const token = response.data.token;
