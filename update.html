@@ -110,7 +110,7 @@
       };
 
       try {
-        const response = await axios.get(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${patientId}`, config);
+        const response = await axios.get(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${id_pasien}`, config);
         const patient = response.data;
 
         document.querySelector('#patient-id').value = patient.id;
@@ -148,7 +148,7 @@
         };
 
         try {
-          await axios.put(`https://crud-dot-optimum-library-419103.et.r.appspot.com/data/${patientId}`, patientData, config);
+          await axios.put(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${id_pasien}`, patientData, config);
           window.location.href = '/patients';
         } catch (error) {
 console.error('Failed to update patient data:', error.response ? error.response.data.message : error.message);
