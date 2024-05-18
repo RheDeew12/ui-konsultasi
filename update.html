@@ -95,24 +95,41 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        window.location.href = '/';
-        return;
+  document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      window.location.href = '/';
+      return;
+    }
+
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
+    };
 
-      const patientId = window.location.search.substring(1);
+    function getIdFromPath() {
+      const pathParts = window.location.pathname.split('/');
+      const id = pathParts[pathParts.length - 1];
+      console.log('ID from path:', id);
+      return id;
+    }
 
-      const config = {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      };
+    const patientId = getIdFromPath();
+    if (!patientId) {
+      alert('ID tidak ditemukan di URL');
+      window.location.href = '/home'; // Redirect to home
+      return;
+    }
 
-      try {
-        const response = await axios.get(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${patientId}`, config);
+    axios.get(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${patientId}`, config)
+      .then(response => {
+        console.log('API response:', response); // Log the full response
         const patient = response.data;
+
+        if (!patient) {
+          throw new Error('Data pasien tidak valid');
+        }
 
         document.querySelector('#patient-id').value = patient.id;
         document.querySelector('#name').value = patient.nama_pasien;
@@ -122,41 +139,48 @@
         document.querySelector('#complain').value = patient.keluhan;
         document.querySelector('#doctor').value = patient.konsultasi_dokter;
         document.querySelector('#consultation').value = patient.jam_konsultasi;
-      } catch (error) {
-        console.error('Failed to fetch patient data:', error.response ? error.response.data.message : error.message);
-      }
-
-      document.querySelector('#update-patient-form').addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const patientId = document.querySelector('#patient-id').value;
-        const name = document.querySelector('#name').value;
-        const age = document.querySelector('#age').value;
-        const gender = document.querySelector('#gender').value;
-        const phone = document.querySelector('#phone').value;
-        const complain = document.querySelector('#complain').value;
-        const doctor = document.querySelector('#doctor').value;
-        const consultation = document.querySelector('#consultation').value;
-
-        const patientData = {
-          id_pasien: patientId,
-          nama_pasien: name,
-          umur: age,
-          jenis_kelamin: gender,
-          no_telp_pasien: phone,
-          keluhan: complain,
-          konsultasi_dokter: doctor,
-          jam_konsultasi: consultation
-        };
-
-        try {
-          await axios.put(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${patientId}`, patientData, config);
-          window.location.href = '/home';
-        } catch (error) {
-console.error('Failed to update patient data:', error.response ? error.response.data.message : error.message);
-        }
+      })
+      .catch(error => {
+        console.error('Failed to fetch patient data:', error);
+        alert('Terjadi kesalahan saat memuat data');
       });
+
+    document.querySelector('#update-patient-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const patientId = document.querySelector('#patient-id').value;
+      const name = document.querySelector('#name').value;
+      const age = document.querySelector('#age').value;
+      const gender = document.querySelector('#gender').value;
+      const phone = document.querySelector('#phone').value;
+      const complain = document.querySelector('#complain').value;
+      const doctor = document.querySelector('#doctor').value;
+      const consultation = document.querySelector('#consultation').value;
+
+      const patientData = {
+        id_pasien: patientId,
+        nama_pasien: name,
+        umur: age,
+        jenis_kelamin: gender,
+        no_telp_pasien: phone,
+        keluhan: complain,
+        konsultasi_dokter: doctor,
+        jam_konsultasi: consultation
+      };
+
+      axios.put(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${patientId}`, patientData, config)
+        .then(response => {
+          console.log('Sukses:', response);
+          alert('Data berhasil diperbarui');
+          window.location.href = '/home';
+        })
+        .catch(error => {
+          console.error('Failed to update patient data:', error);
+          alert('Terjadi kesalahan saat memperbarui data');
+        });
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
