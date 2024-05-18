@@ -8,7 +8,6 @@
     <title>KLINIK DOKTER BAGYO</title>
 </head>
 <body>
-<body >
 
 <div class="min-h-screen flex items-center justify-center">
     <div class="max-w-md w-full md:w-2/3 lg:w-1/2 bg-gray-700 p-8 rounded-lg shadow-lg">
@@ -16,8 +15,8 @@
 
         <!-- Sign In Form -->
         <form method="post" action="" id="sign-in-form" class="mb-6">
-            <label for="email" class="block text-sm font-medium text-white">Email Address</label>
-            <input type="email" id="email" name="email" class="mt-1 p-3 w-full border rounded-md bg">
+            <label for="name" class="block text-sm font-medium text-white">Name</label>
+            <input type="text" id="name" name="name" class="mt-1 p-3 w-full border rounded-md bg">
 
             <label for="password" class="block mt-4 text-sm font-medium text-white">Password</label>
             <input type="password" id="password" name="password" class="mt-1 p-3 w-full border rounded-md">
@@ -33,12 +32,12 @@
 document.getElementById('sign-in-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById('email').value;
+    const name = document.getElementById('name').value; // Changed from 'email' to 'name'
     const password = document.getElementById('password').value;
 
     try {
         const response = await axios.post('https://auth-admin-dot-ammar-145.et.r.appspot.com/admin/login', {
-            email,
+            name, // Changed from 'email' to 'name'
             password
         });
 
