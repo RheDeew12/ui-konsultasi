@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Update Patient</title>
+</head>
+<body>
+  <nav class="bg-gray-800 text-white px-4 py-2">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <img src="img/suntik.png" alt="Logo" class="h-8 w-8 mr-2">
+        <span class="font-bold text-lg">Clinic Wangbrew</span>
+      </div>
+      <div class="flex items-center">
+        <a href="/patients" class="text-blue-500 hover:text-blue-700 font-bold py-2 px-4 rounded mr-4">Patients List</a>
+        <a href="/appointments" class="text-green-500 hover:text-green-700 font-bold py-2 px-4 rounded">Appointments</a>
+      </div>
+      <div class="flex items-center">
+        <span class="text-gray-300 mr-4">Welcome, John Doe</span>
+        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="justify-center flex mt-5">
+    <h1 class="text-3xl">Update Patient</h1>
+  </div>
+
+  <div class="justify-center flex mt-5">
+    <form id="update-patient-form" class="w-full max-w-2xl">
+      <input type="hidden" id="patient-id" name="id">
+
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="name">
+          Name
+        </label>
+        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Enter name">
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="age">
+          Age
+        </label>
+        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="age" type="number" placeholder="Enter age">
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="gender">
+          Gender
+        </label>
+        <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="phone">
+          Phone
+        </label>
+        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="phone" type="tel" placeholder="Enter phone number">
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="complain">
+          Complain
+        </label>
+        <textarea class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="complain" rows="4" placeholder="Enter complain"></textarea>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="doctor">
+          Doctor
+        </label>
+        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="doctor" type="text" placeholder="Enter doctor name">
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="consultation">
+          Consultation
+        </label>
+        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="consultation" type="text" placeholder="Enter consultation">
+      </div>
+
+      <div class="flex items-center justify-center">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+          Update
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        window.location.href = '/';
+        return;
+      }
+
+      const patientId = window.location.search.substring(1);
+
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      };
+
+      try {
+        const response = await axios.get(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${patientId}`, config);
+        const patient = response.data;
+
+        document.querySelector('#patient-id').value = patient.id;
+        document.querySelector('#name').value = patient.nama_pasien;
+        document.querySelector('#age').value = patient.umur;
+        document.querySelector('#gender').value = patient.jenis_kelamin;
+        document.querySelector('#phone').value = patient.no_telp_pasien;
+        document.querySelector('#complain').value = patient.keluhan;
+        document.querySelector('#doctor').value = patient.konsultasi_dokter;
+        document.querySelector('#consultation').value = patient.jam_konsultasi;
+      } catch (error) {
+        console.error('Failed to fetch patient data:', error.response ? error.response.data.message : error.message);
+      }
+
+      document.querySelector('#update-patient-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const patientId = document.querySelector('#patient-id').value;
+        const name = document.querySelector('#name').value;
+        const age = document.querySelector('#age').value;
+        const gender = document.querySelector('#gender').value;
+        const phone = document.querySelector('#phone').value;
+        const complain = document.querySelector('#complain').value;
+        const doctor = document.querySelector('#doctor').value;
+        const consultation = document.querySelector('#consultation').value;
+
+        const patientData = {
+          nama_pasien: name,
+          umur: age,
+          jenis_kelamin: gender,
+          no_telp_pasien: phone,
+          keluhan: complain,
+          konsultasi_dokter: doctor,
+          jam_konsultasi: consultation
+        };
+
+        try {
+          await axios.put(`https://crud-dot-optimum-library-419103.et.r.appspot.com/data/${patientId}`, patientData, config);
+          window.location.href = '/patients';
+        } catch (error) {
+console.error('Failed to update patient data:', error.response ? error.response.data.message : error.message);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
