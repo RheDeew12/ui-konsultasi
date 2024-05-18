@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        .navbar-custom {
+            background-color: #007bff;
+        }
+        .navbar-custom .navbar-brand {
+            color: #fff;
+        }
+        .data-list-container {
+            border: 1px solid #007bff;
+            border-radius: 10px;
+        }
+        .data-list-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 0;
+        }
+        .data-list {
+            background-color: #fff;
+            color: #000;
+            padding: 20px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-top: 1px solid #007bff;
+        }
+        .data-list li {
+            list-style: none;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            position: relative;
+        }
+        .data-list strong {
+            width: 150px;
+            display: inline-block;
+        }
+        .edit-btn {
+            position: absolute;
+            top: 10px;
+            right: 70px;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .text-white {
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+  <a class="navbar-brand" href="#">Data KTP</a>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a href="input_data" class="nav-link btn btn-success btn-sm text-white">Input Data</a>
+      </li>
+      <li class="nav-item">
+        <a href="login" class="nav-link btn btn-danger btn-sm text-white ml-3">Log Out</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="data-list-container">
+                <div class="data-list-header">
+                    <h2 class="mb-0">Daftar Data</h2>
+                </div>
+                <ul class="data-list">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    try {
+        const response = await axios.get('https://crud-dot-optimum-library-419103.et.r.appspot.com/data', config);
+        const dataList = response.data;
+
+        const dataListContainer = document.querySelector('.data-list');
+        dataListContainer.innerHTML = ''; // Kosongkan elemen sebelum menambahkan data
+
+        dataList.forEach(data => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+              <strong>Nama</strong> : ${data.nama} <br>
+              <strong>Tanggal Lahir</strong> : ${data.tanggal_lahir} <br>
+              <strong>Agama</strong> : ${data.agama} <br>
+              <strong>Status</strong> : ${data.status} <br>
+              <strong>Alamat</strong> : ${data.alamat}
+              <span class="edit-btn"><a href="edit.php?id=${data.id}" class="btn btn-primary btn-sm">Edit</a></span>
+              <span class="delete-btn"><button class="btn btn-danger btn-sm" onclick="deleteData(${data.id})">Hapus</button></span>
+            `;
+            dataListContainer.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error('Failed to fetch data:', error.response ? error.response.data.message : error.message);
+    }
+});
+
+async function deleteData(id) {
+    const token = localStorage.getItem('authToken');
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    try {
+        await axios.delete(`https://crud-dot-optimum-library-419103.et.r.appspot.com/data/${id}`, config);
+        alert('Data berhasil dihapus');
+        location.reload(); // Refresh halaman setelah data dihapus
+    } catch (error) {
+        console.error('Failed to delete data:', error.response ? error.response.data.message : error.message);
+    }
+}
+</script>
+
+</body>
+</html>

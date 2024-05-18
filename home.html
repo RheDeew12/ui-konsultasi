@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>KLINIK DOKTER BAGYO</title>
+  
+</head>
+<body>
+  <nav class="bg-gray-800 text-white px-4 py-2">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <img src="img/suntik.png" alt="Logo" class="h-8 w-8 mr-2">
+        <span class="font-bold text-lg">Clinic Wangbrew</span>
+      </div>
+      <div class="flex items-center">
+        <a href="/add-patient" class="text-blue-500 hover:text-blue-700 font-bold py-2 px-4 rounded mr-4">Add Patient</a>
+        <a href="/appointments" class="text-green-500 hover:text-green-700 font-bold py-2 px-4 rounded">Appointments</a>
+      </div>
+      <div class="flex items-center">
+        <span class="text-gray-300 mr-4">Welcome, John Doe</span>
+        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="justify-center flex mt-5">
+    <h1 class="text-3xl">PATIENT'S LIST</h1>
+  </div>
+
+  <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-20">
+    Add Patient
+  </button>
+
+  <div class="justify-center flex">
+    <table class="w-full text-left mt-6 max-w-2xl ">
+      <thead>
+        <tr>
+          <th class="px-4 py-2">Patient ID</th>
+          <th class="px-4 py-2">Name</th>
+          <th class="px-4 py-2">Age</th>
+          <th class="px-4 py-2">Gender</th>
+          <th class="px-4 py-2">Phone</th>
+          <th class="px-4 py-2">Complain</th>
+          <th class="px-4 py-2">Doctor</th>
+          <th class="px-4 py-2">Consultation</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="patient-list">
+        <!-- Patient list will be populated here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    window.location.href = '/';
+    return;
+  }
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+
+  try {
+    const response = await axios.get('https://crud-dot-optimum-library-419103.et.r.appspot.com/data', config);
+    const dataList = response.data;
+
+    const tbody = document.querySelector('#patient-list');
+    tbody.innerHTML = ''; // Clear the table body before populating it
+
+    dataList.forEach(data => {
+      const row = document.createElement('tr');
+
+      const idCell = document.createElement('td');
+      idCell.textContent = data.id;
+      row.appendChild(idCell);
+
+      const nameCell = document.createElement('td');
+      nameCell.textContent = data.nama;
+      row.appendChild(nameCell);
+
+      const ageCell = document.createElement('td');
+      ageCell.textContent = data.age;
+      row.appendChild(ageCell);
+
+      const genderCell = document.createElement('td');
+      genderCell.textContent = data.gender;
+      row.appendChild(genderCell);
+
+      const phoneCell = document.createElement('td');
+      phoneCell.textContent = data.phone;
+      row.appendChild(phoneCell);
+
+      const complainCell = document.createElement('td');
+      complainCell.textContent = data.complain;
+      row.appendChild(complainCell);
+
+      const doctorCell = document.createElement('td');
+      doctorCell.textContent = data.doctor;
+      row.appendChild(doctorCell);
+
+      const consultationCell = document.createElement('td');
+      consultationCell.textContent = data.consultation;
+      row.appendChild(consultationCell);
+
+      const actionsCell = document.createElement('td');
+
+      const updateButton = document.createElement('button');
+      updateButton.textContent = 'Update';
+      updateButton.classList.add('bg-orange-500', 'hover:bg-orange-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
+      updateButton.addEventListener('click', () => {
+        // Handle update button click here
+      });
+      actionsCell.appendChild(updateButton);
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
+      deleteButton.addEventListener('click', () => {
+        // Handle delete button click here
+      });
+      actionsCell.appendChild(deleteButton);
+
+      row.appendChild(actionsCell);
+
+      tbody.appendChild(row);
+    });
+  } catch (error) {
+    console.error('Failed to fetch data:', error.response ? error.response.data.message : error.message);
+  }
+});
+  </script>
+</body>
+</html>
