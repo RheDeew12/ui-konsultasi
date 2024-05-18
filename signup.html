@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KLINIK DOKTER BAGYO</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body class="">
 
@@ -13,12 +14,9 @@
         <h2 class="text-3xl font-semibold text-center text-red-500 mb-6">KLINIK DOKTER BAGYO</h2>
 
         <!-- Sign Up Form -->
-        <form method="POST" action="sign_up.php" class="mb-6" onsubmit="return validateForm()">
+        <form id="sign-up-form" class="mb-6">
             <label for="name" class="block text-sm font-medium text-white">Name</label>
             <input type="text" id="name" name="name" class="mt-1 p-3 w-full border rounded-md">
-
-            <label for="email" class="block mt-4 text-sm font-medium text-white">Email Address</label>
-            <input type="email" id="email" name="email" class="mt-1 p-3 w-full border rounded-md">
 
             <label for="password" class="block mt-4 text-sm font-medium text-white">Password</label>
             <input type="password" id="password" name="password" class="mt-1 p-3 w-full border rounded-md">
@@ -33,11 +31,10 @@
 <script>
     function validateForm() {
         var name = document.getElementById("name").value;
-        var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
 
-        // Cek input kosong
-        if (name === "" || email === "" || password === "") {
+        // Check if input fields are not empty
+        if (name === "" || password === "") {
             alert("Please fill in all fields.");
             return false;
         }
@@ -45,19 +42,41 @@
         return true;
     }
 
-    // Button sign up nyala kalau semua form terisi
+    // Toggle sign up button based on form inputs
     document.getElementById("name").addEventListener("input", toggleSignupButton);
-    document.getElementById("email").addEventListener("input", toggleSignupButton);
     document.getElementById("password").addEventListener("input", toggleSignupButton);
 
     function toggleSignupButton() {
         var name = document.getElementById("name").value;
-        var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
-
         var signupButton = document.getElementById("signupButton");
-        signupButton.disabled = name === "" || email === "" || password === "";
+        signupButton.disabled = name === "" || password === "";
     }
+
+    // Form submission
+    document.getElementById("sign-up-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+
+        if (validateForm()) {
+            var name = document.getElementById("name").value;
+            var password = document.getElementById("password").value;
+
+            const registerData = {
+                name: name,
+                password: password
+            };
+
+            axios.post('https://auth-admin-dot-ammar-145.et.r.appspot.com/admin', registerData)
+                .then(response => {
+                    alert('Registration successful');
+                    // Redirect or perform other actions upon successful registration
+                })
+                .catch(error => {
+                    console.error('There was an error registering!', error);
+                    alert('Registration failed: ' + (error.response ? error.response.data.message : error.message));
+                });
+        }
+    });
 </script>
 
 </body>
