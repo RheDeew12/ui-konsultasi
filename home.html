@@ -20,7 +20,7 @@
       </div>
       <div class="flex items-center">
         <span class="text-gray-300 mr-4">Welcome, John Doe</span>
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Sign Out</button>
+        <button onclick="logout()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Sign Out</button>
       </div>
     </div>
   </nav>
@@ -55,6 +55,12 @@
   </div>
 
   <script>
+
+    async function logout() {
+      localStorage.removeItem('authToken');
+      window.location.href = '/';
+    }
+    
     document.addEventListener('DOMContentLoaded', async () => {
   const token = localStorage.getItem('authToken');
   if (!token) {
@@ -69,7 +75,7 @@
   };
 
   try {
-    const response = await axios.get('https://crud-dot-optimum-library-419103.et.r.appspot.com/data', config);
+    const response = await axios.get('https://auth-admin-dot-ammar-145.et.r.appspot.com/data', config);
     const dataList = response.data;
 
     const tbody = document.querySelector('#patient-list');
@@ -116,16 +122,24 @@
       updateButton.textContent = 'Update';
       updateButton.classList.add('bg-orange-500', 'hover:bg-orange-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
       updateButton.addEventListener('click', () => {
-        // Handle update button click here
+      const patientId = idCell.textContent;
+      window.location.href = `update.html?id=${patientId}`;
       });
       actionsCell.appendChild(updateButton);
 
       const deleteButton = document.createElement('button');
-      deleteButton.textContent = 'Delete';
-      deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
-      deleteButton.addEventListener('click', () => {
-        // Handle delete button click here
-      });
+        deleteButton.textContent = 'Delete';
+        deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
+        deleteButton.addEventListener('click', async () => {
+          
+          try {
+            await axios.delete(`https://auth-admin-dot-ammar-145.et.r.appspot.com/data/${data.id}`, config);
+            row.remove();
+            alert('Patient deleted successfully');
+          } catch (error) {
+            console.error('Failed to delete patient:', error.response ? error.response.data.message : error.message);
+          }
+          });
       actionsCell.appendChild(deleteButton);
 
       row.appendChild(actionsCell);
