@@ -46,7 +46,7 @@
           <th class="px-4 py-2">Complain</th>
           <th class="px-4 py-2">Consultation With</th>
           <th class="px-4 py-2">Time</th>
-          <th class="px-4 py-2">Actions</th> <!-- Add this line -->
+          <th class="px-4 py-2">Actions</th>
         </tr>
       </thead>
       <tbody id="patient-list">
@@ -61,7 +61,7 @@
       window.location.href = '/';
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
+    async function fetchPatients() {
       const token = localStorage.getItem('authToken');
       if (!token) {
         window.location.href = '/';
@@ -113,7 +113,7 @@
           row.appendChild(consultationCell);
 
           const timeCell = document.createElement('td');
-          timeCell.textContent = data.jam_konsultasi; // Fix this line
+          timeCell.textContent = data.jam_konsultasi;
           row.appendChild(timeCell);
 
           const actionsCell = document.createElement('td');
@@ -148,7 +148,11 @@
       } catch (error) {
         console.error('Failed to fetch data:', error.response ? error.response.data.message : error.message);
       }
-    });
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchPatients);
+
+    window.addEventListener('updatePatientData', fetchPatients);
   </script>
 </body>
 </html>
