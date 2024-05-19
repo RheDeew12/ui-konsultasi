@@ -35,7 +35,7 @@
   </a>
 
   <div class="justify-center flex">
-    <table class="w-full text-left mt-6 max-w-2xl">
+    <table class="w-full text-left mt-6 max-w-2xl ">
       <thead>
         <tr>
           <th class="px-4 py-2">Patient ID</th>
@@ -56,9 +56,9 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       const token = localStorage.getItem('authToken');
-
+      
       if (!token) {
         window.location.href = '/';
         return;
@@ -72,34 +72,72 @@
 
       async function fetchPatients() {
         try {
-          const response = await axios.get('https://crud-data-dot-ammar-145.et.r.appspot.com/pasien', {
-            ...config,
-            headers: {
-              ...config.headers,
-              'Cache-Control': 'no-cache'
-            }
-          });
+          const response = await axios.get('https://crud-data-dot-ammar-145.et.r.appspot.com/pasien', config);
           const dataList = response.data;
           const tbody = document.querySelector('#patient-list');
-          tbody.innerHTML = ''; // Clear existing data
+          tbody.innerHTML = ''; // Kosongkan elemen sebelum menambahkan data
 
           dataList.forEach(data => {
             const row = document.createElement('tr');
 
-            row.innerHTML = `
-              <td class="px-4 py-2">${data.id_pasien}</td>
-              <td class="px-4 py-2">${data.nama_pasien}</td>
-              <td class="px-4 py-2">${data.umur}</td>
-              <td class="px-4 py-2">${data.jenis_kelamin}</td>
-              <td class="px-4 py-2">${data.no_telp_pasien}</td>
-              <td class="px-4 py-2">${data.keluhan}</td>
-              <td class="px-4 py-2">${data.konsultasi_dokter}</td>
-              <td class="px-4 py-2">${data.jam_konsultasi}</td>
-              <td class="px-4 py-2">
-                <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded" onclick="updatePatient('${data.id_pasien}')">Update</button>
-                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="deletePatient('${data.id_pasien}', this)">Delete</button>
-              </td>
-            `;
+            const idCell = document.createElement('td');
+            idCell.textContent = data.id_pasien;
+            row.appendChild(idCell);
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = data.nama_pasien;
+            row.appendChild(nameCell);
+
+            const ageCell = document.createElement('td');
+            ageCell.textContent = data.umur;
+            row.appendChild(ageCell);
+
+            const genderCell = document.createElement('td');
+            genderCell.textContent = data.jenis_kelamin;
+            row.appendChild(genderCell);
+
+            const phoneCell = document.createElement('td');
+            phoneCell.textContent = data.no_telp_pasien;
+            row.appendChild(phoneCell);
+
+            const complainCell = document.createElement('td');
+            complainCell.textContent = data.keluhan;
+            row.appendChild(complainCell);
+
+            const consultationCell = document.createElement('td');
+            consultationCell.textContent = data.konsultasi_dokter;
+            row.appendChild(consultationCell);
+
+            const timeCell = document.createElement('td');
+            timeCell.textContent = data.jam_konsultasi;
+            row.appendChild(timeCell);
+
+            const actionsCell = document.createElement('td');
+
+            const updateButton = document.createElement('button');
+            updateButton.textContent = 'Update';
+            updateButton.classList.add('bg-orange-500', 'hover:bg-orange-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
+            updateButton.addEventListener('click', () => {
+              const patientId = idCell.textContent;
+              window.location.href = `update/${patientId}`;
+            });
+            actionsCell.appendChild(updateButton);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
+            deleteButton.addEventListener('click', async () => {
+              try {
+                await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${data.id_pasien}`, config);
+                row.remove();
+                alert('Patient deleted successfully');
+              } catch (error) {
+                console.error('Failed to delete patient:', error.response ? error.response.data.message : error.message);
+              }
+            });
+            actionsCell.appendChild(deleteButton);
+
+            row.appendChild(actionsCell);
 
             tbody.appendChild(row);
           });
@@ -110,23 +148,7 @@
 
       fetchPatients();
 
-      async function deletePatient(id, button) {
-        try {
-          await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${id}`, config);
-          const row = button.closest('tr');
-          row.remove();
-          alert('Patient deleted successfully');
-        } catch (error) {
-          console.error('Failed to delete patient:', error.response ? error.response.data.message : error.message);
-        }
-      }
-
-      window.updatePatient = (patientId) => {
-        window.location.href = `update/${patientId}`;
-      };
-
-      window.deletePatient = deletePatient;
-
+      // If Service Worker is needed for caching
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').then((registration) => {
           console.log('Service Worker registered with scope:', registration.scope);
@@ -136,14 +158,32 @@
       }
     });
 
+    async function deleteData(id) {
+      const token = localStorage.getItem('authToken');
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      };
+
+      try {
+        await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${id}`, config);
+        alert('Data berhasil dihapus');
+        location.reload(); // Refresh halaman setelah data dihapus
+      } catch (error) {
+        console.error('Failed to delete data:', error.response ? error.response.data.message : error.message);
+      }
+    }
+
     function logout() {
       localStorage.removeItem('authToken');
-      window.location.href = '/'; // Redirect to login page
+      window.location.href = '/'; // Redirect ke halaman login
     }
 
     if (!localStorage.getItem('authToken')) {
       window.location.href = '/';
     }
   </script>
+  
 </body>
 </html>
