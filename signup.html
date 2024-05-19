@@ -68,8 +68,9 @@
 
             axios.post('https://auth-admin-dot-ammar-145.et.r.appspot.com/admin', registerData)
                 .then(response => {
-                    alert('Registration successful');
-                    // Redirect or perform other actions upon successful registration
+                    alert('Registration successful', () => {
+                        window.location.href = 'signin'; // Redirect to sign-in page
+                    });
                 })
                 .catch(error => {
                     console.error('There was an error registering!', error);
