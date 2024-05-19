@@ -158,21 +158,21 @@
       const consultation = document.querySelector('#consultation').value;
       
       const patientData = {
-        "id_pasien": patientId,
-        "nama_pasien": name,
-        "umur": age,
-        "jenis_kelamin": gender,
-        "no_telp_pasien": phone,
-        "keluhan": complain,
-        "konsultasi_dokter": doctor,
-        "jam_konsultasi": consultation
+        id_pasien: patientId,
+        nama_pasien: name,
+        umur: age,
+        jenis_kelamin: gender,
+        no_telp_pasien: phone,
+        keluhan: complain,
+        konsultasi_dokter: doctor,
+        jam_konsultasi: consultation
       };
 
       axios.put(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${patientId}`, patientData, config)
         .then(response => {
           console.log('Sukses:', response);
           alert('Data berhasil diperbarui');
-          //window.location.href = '/home';
+          window.location.href = '/home';
         })
         .catch(error => {
           console.error('Failed to update patient data:', error);
