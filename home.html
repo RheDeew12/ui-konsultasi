@@ -148,32 +148,31 @@
 
       fetchPatients();
 
-    async function deleteData(id) {
-      const token = localStorage.getItem('authToken');
-      const config = {
-        headers: {
-          'Authorization': `Bearer ${token}`
+      async function deleteData(id) {
+        const token = localStorage.getItem('authToken');
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        };
+
+        try {
+          await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${id}`, config);
+          alert('Data berhasil dihapus');
+          location.reload(); // Refresh halaman setelah data dihapus
+        } catch (error) {
+          console.error('Failed to delete data:', error.response ? error.response.data.message : error.message);
         }
-      };
-
-      try {
-        await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${id}`, config);
-        alert('Data berhasil dihapus');
-        location.reload(); // Refresh halaman setelah data dihapus
-      } catch (error) {
-        console.error('Failed to delete data:', error.response ? error.response.data.message : error.message);
       }
-    }
 
-    function logout() {
-      localStorage.removeItem('authToken');
-      window.location.href = '/'; // Redirect ke halaman login
-    }
+      function logout() {
+        localStorage.removeItem('authToken');
+        window.location.href = '/'; // Redirect ke halaman login
+      }
 
-    if (!localStorage.getItem('authToken')) {
-      window.location.href = '/';
-    }
+      if (!localStorage.getItem('authToken')) {
+        window.location.href = '/';
+      }
+    });
   </script>
-  
-</body>
-</html>
+</
