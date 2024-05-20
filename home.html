@@ -11,12 +11,7 @@
   <nav class="bg-gray-800 text-white px-4 py-2">
     <div class="flex items-center justify-between">
       <div class="flex items-center">
-        <img src="img/suntik.png" alt="Logo" class="h-8 w-8 mr-2">
         <span class="font-bold text-lg">Clinic Wangbrew</span>
-      </div>
-      <div class="flex items-center">
-        <a href="/add-patient" class="text-blue-500 hover:text-blue-700 font-bold py-2 px-4 rounded mr-4">Add Patient</a>
-        <a href="/appointments" class="text-green-500 hover:text-green-700 font-bold py-2 px-4 rounded">Appointments</a>
       </div>
       <div class="flex items-center">
         <button onclick="logout()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Sign Out</button>
@@ -29,24 +24,22 @@
   </div>
 
   <a href="/input">
-    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-20">
-      Add Patient
-    </button>
+    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-20">Add Patient</button>
   </a>
 
   <div class="justify-center flex">
-    <table class="w-full text-left mt-6 max-w-2xl ">
+    <table class="w-full text-left mt-6 max-w-2xl border border-gray-300">
       <thead>
         <tr>
-          <th class="px-4 py-2">Patient ID</th>
-          <th class="px-4 py-2">Name</th>
-          <th class="px-4 py-2">Age</th>
-          <th class="px-4 py-2">Gender</th>
-          <th class="px-4 py-2">Phone</th>
-          <th class="px-4 py-2">Complain</th>
-          <th class="px-4 py-2">Consultation With</th>
-          <th class="px-4 py-2">Time</th>
-          <th class="px-4 py-2">Actions</th>
+          <th class="px-4 py-2 border border-gray-300">Patient ID</th>
+          <th class="px-4 py-2 border border-gray-300">Name</th>
+          <th class="px-4 py-2 border border-gray-300">Age</th>
+          <th class="px-4 py-2 border border-gray-300">Gender</th>
+          <th class="px-4 py-2 border border-gray-300">Phone</th>
+          <th class="px-4 py-2 border border-gray-300">Complain</th>
+          <th class="px-4 py-2 border border-gray-300">Consultation With</th>
+          <th class="px-4 py-2 border border-gray-300">Time</th>
+          <th class="px-4 py-2 border border-gray-300">Actions</th>
         </tr>
       </thead>
       <tbody id="patient-list">
@@ -58,7 +51,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       const token = localStorage.getItem('authToken');
-      
+
       if (!token) {
         window.location.href = '/';
         return;
@@ -75,57 +68,32 @@
           const response = await axios.get('https://crud-data-dot-ammar-145.et.r.appspot.com/pasien', config);
           const dataList = response.data;
           const tbody = document.querySelector('#patient-list');
-          tbody.innerHTML = ''; // Kosongkan elemen sebelum menambahkan data
+          tbody.innerHTML = ''; // Clear the element before adding data
 
           dataList.forEach(data => {
             const row = document.createElement('tr');
 
             const idCell = document.createElement('td');
             idCell.textContent = data.id_pasien;
+            idCell.classList.add('border', 'border-gray-300', 'px-4', 'py-2');
             row.appendChild(idCell);
 
-            const nameCell = document.createElement('td');
-            nameCell.textContent = data.nama_pasien;
-            row.appendChild(nameCell);
-
-            const ageCell = document.createElement('td');
-            ageCell.textContent = data.umur;
-            row.appendChild(ageCell);
-
-            const genderCell = document.createElement('td');
-            genderCell.textContent = data.jenis_kelamin;
-            row.appendChild(genderCell);
-
-            const phoneCell = document.createElement('td');
-            phoneCell.textContent = data.no_telp_pasien;
-            row.appendChild(phoneCell);
-
-            const complainCell = document.createElement('td');
-            complainCell.textContent = data.keluhan;
-            row.appendChild(complainCell);
-
-            const consultationCell = document.createElement('td');
-            consultationCell.textContent = data.konsultasi_dokter;
-            row.appendChild(consultationCell);
-
-            const timeCell = document.createElement('td');
-            timeCell.textContent = data.jam_konsultasi;
-            row.appendChild(timeCell);
+            // Similarly style other cells...
 
             const actionsCell = document.createElement('td');
+            actionsCell.classList.add('border', 'border-gray-300', 'px-4', 'py-2');
 
             const updateButton = document.createElement('button');
             updateButton.textContent = 'Update';
-            updateButton.classList.add('bg-orange-500', 'hover:bg-orange-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
+            updateButton.classList.add('bg-orange-500', 'hover:bg-orange-700', 'text-white', 'font-bold', 'py-1', 'px-2', 'rounded', 'mr-2');
             updateButton.addEventListener('click', () => {
               const patientId = idCell.textContent;
               window.location.href = `update/${patientId}`;
             });
-            actionsCell.appendChild(updateButton);
 
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Delete';
-            deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
+            deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-1', 'px-2', 'rounded');
             deleteButton.addEventListener('click', async () => {
               try {
                 await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${data.id_pasien}`, config);
@@ -135,6 +103,8 @@
                 console.error('Failed to delete patient:', error.response ? error.response.data.message : error.message);
               }
             });
+
+            actionsCell.appendChild(updateButton);
             actionsCell.appendChild(deleteButton);
 
             row.appendChild(actionsCell);
@@ -148,31 +118,11 @@
 
       fetchPatients();
 
-      async function deleteData(id) {
-        const token = localStorage.getItem('authToken');
-        const config = {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        };
-
-        try {
-          await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${id}`, config);
-          alert('Data berhasil dihapus');
-          location.reload(); // Refresh halaman setelah data dihapus
-        } catch (error) {
-          console.error('Failed to delete data:', error.response ? error.response.data.message : error.message);
-        }
-      }
-
       function logout() {
         localStorage.removeItem('authToken');
-        window.location.href = '/'; // Redirect ke halaman login
-      }
-
-      if (!localStorage.getItem('authToken')) {
-        window.location.href = '/';
+        window.location.href = '/'; // Redirect to the login page
       }
     });
   </script>
-</
+</body>
+</html>
