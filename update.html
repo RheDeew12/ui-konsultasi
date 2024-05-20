@@ -173,7 +173,7 @@
         jam_konsultasi: consultation
       };
 
-      axios.put(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${patientId}`, patientData, config)
+      axios.put(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${patientId}`, JSON.stringify(patientData), config)
         .then(response => {
           console.log('Sukses:', response);
           alert('Data berhasil diperbarui');
