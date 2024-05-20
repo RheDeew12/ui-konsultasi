@@ -3,9 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <title>KLINIK DOKTER BAGYO</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .inline-buttons button {
+      margin-right: 5px;
+    }
+  </style>
 </head>
 <body>
   <nav class="bg-gray-800 text-white px-4 py-2">
@@ -28,18 +47,18 @@
   </a>
 
   <div class="justify-center flex">
-    <table class="w-full text-left mt-6 max-w-2xl border border-gray-300">
+    <table class="w-full text-left mt-6 max-w-2xl">
       <thead>
         <tr>
-          <th class="px-4 py-2 border border-gray-300">Patient ID</th>
-          <th class="px-4 py-2 border border-gray-300">Name</th>
-          <th class="px-4 py-2 border border-gray-300">Age</th>
-          <th class="px-4 py-2 border border-gray-300">Gender</th>
-          <th class="px-4 py-2 border border-gray-300">Phone</th>
-          <th class="px-4 py-2 border border-gray-300">Complain</th>
-          <th class="px-4 py-2 border border-gray-300">Consultation With</th>
-          <th class="px-4 py-2 border border-gray-300">Time</th>
-          <th class="px-4 py-2 border border-gray-300">Actions</th>
+          <th class="px-4 py-2">Patient ID</th>
+          <th class="px-4 py-2">Name</th>
+          <th class="px-4 py-2">Age</th>
+          <th class="px-4 py-2">Gender</th>
+          <th class="px-4 py-2">Phone</th>
+          <th class="px-4 py-2">Complain</th>
+          <th class="px-4 py-2">Consultation With</th>
+          <th class="px-4 py-2">Time</th>
+          <th class="px-4 py-2">Actions</th>
         </tr>
       </thead>
       <tbody id="patient-list">
@@ -75,17 +94,41 @@
 
             const idCell = document.createElement('td');
             idCell.textContent = data.id_pasien;
-            idCell.classList.add('border', 'border-gray-300', 'px-4', 'py-2');
             row.appendChild(idCell);
 
-            // Similarly style other cells...
+            const nameCell = document.createElement('td');
+            nameCell.textContent = data.nama_pasien;
+            row.appendChild(nameCell);
+
+            const ageCell = document.createElement('td');
+            ageCell.textContent = data.umur;
+            row.appendChild(ageCell);
+
+            const genderCell = document.createElement('td');
+            genderCell.textContent = data.jenis_kelamin;
+            row.appendChild(genderCell);
+
+            const phoneCell = document.createElement('td');
+            phoneCell.textContent = data.no_telp_pasien;
+            row.appendChild(phoneCell);
+
+            const complainCell = document.createElement('td');
+            complainCell.textContent = data.keluhan;
+            row.appendChild(complainCell);
+
+            const consultationCell = document.createElement('td');
+            consultationCell.textContent = data.konsultasi_dokter;
+            row.appendChild(consultationCell);
+
+            const timeCell = document.createElement('td');
+            timeCell.textContent = data.jam_konsultasi;
+            row.appendChild(timeCell);
 
             const actionsCell = document.createElement('td');
-            actionsCell.classList.add('border', 'border-gray-300', 'px-4', 'py-2');
 
             const updateButton = document.createElement('button');
             updateButton.textContent = 'Update';
-            updateButton.classList.add('bg-orange-500', 'hover:bg-orange-700', 'text-white', 'font-bold', 'py-1', 'px-2', 'rounded', 'mr-2');
+            updateButton.classList.add('bg-orange-500', 'hover:bg-orange-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
             updateButton.addEventListener('click', () => {
               const patientId = idCell.textContent;
               window.location.href = `update/${patientId}`;
@@ -93,7 +136,7 @@
 
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Delete';
-            deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-1', 'px-2', 'rounded');
+            deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded');
             deleteButton.addEventListener('click', async () => {
               try {
                 await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${data.id_pasien}`, config);
