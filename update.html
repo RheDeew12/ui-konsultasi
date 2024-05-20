@@ -18,10 +18,7 @@
         <a href="/patients" class="text-blue-500 hover:text-blue-700 font-bold py-2 px-4 rounded mr-4">Patients List</a>
         <a href="/appointments" class="text-green-500 hover:text-green-700 font-bold py-2 px-4 rounded">Appointments</a>
       </div>
-      <div class="flex items-center">
-        <span class="text-gray-300 mr-4">Welcome, John Doe</span>
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Sign Out</button>
-      </div>
+      
     </div>
   </nav>
 
@@ -33,57 +30,65 @@
     <form id="update-patient-form" class="w-full max-w-2xl">
       <input type="hidden" id="patient-id" name="id">
 
-      <div class="mb-4">
-        <label class="block text-gray-700 font-bold mb-2" for="name">
-          Name
-        </label>
-        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Enter name">
+      <div class="flex flex-wrap -mx-3 mb-6">
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
+            Name
+          </label>
+          <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="name" type="text" placeholder="Enter name">
+        </div>
+        
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="age">
+            Age
+          </label>
+          <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="age" type="number" placeholder="Enter age">
+        </div>
       </div>
 
-      <div class="mb-4">
-        <label class="block text-gray-700 font-bold mb-2" for="age">
-          Age
-        </label>
-        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="age" type="number" placeholder="Enter age">
+      <div class="flex flex-wrap -mx-3 mb-6">
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="gender">
+            Gender
+          </label>
+          <select class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="phone">
+            Phone
+          </label>
+          <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="phone" type="tel" placeholder="Enter phone number">
+        </div>
       </div>
 
-      <div class="mb-4">
-        <label class="block text-gray-700 font-bold mb-2" for="gender">
-          Gender
-        </label>
-        <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="gender">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
+      <div class="flex flex-wrap -mx-3 mb-6">
+        <div class="w-full px-3 mb-6 md:mb-0">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="complain">
+            Complain
+          </label>
+          <textarea class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="complain" rows="4" placeholder="Enter complain"></textarea>
+        </div>
       </div>
 
-      <div class="mb-4">
-        <label class="block text-gray-700 font-bold mb-2" for="phone">
-          Phone
-        </label>
-        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="phone" type="tel" placeholder="Enter phone number">
-      </div>
+      <div class="flex flex-wrap -mx-3 mb-6">
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="doctor">
+            Doctor
+          </label>
+          <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="doctor" type="text" placeholder="Enter doctor name">
+        </div>
 
-      <div class="mb-4">
-        <label class="block text-gray-700 font-bold mb-2" for="complain">
-          Complain
-        </label>
-        <textarea class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="complain" rows="4" placeholder="Enter complain"></textarea>
-      </div>
-
-      <div class="mb-4">
-        <label class="block text-gray-700 font-bold mb-2" for="doctor">
-          Doctor
-        </label>
-        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="doctor" type="text" placeholder="Enter doctor name">
-      </div>
-
-      <div class="mb-4">
-        <label class="block text-gray-700 font-bold mb-2" for="consultation">
-          Consultation
-        </label>
-        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="consultation" type="text" placeholder="Enter consultation">
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="consultation">
+            Consultation
+          </label>
+          <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="consultation" type="text" placeholder="Enter consultation">
+        </div>
       </div>
 
       <div class="flex items-center justify-center">
