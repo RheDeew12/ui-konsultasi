@@ -152,8 +152,7 @@
 
     document.querySelector('#update-patient-form').addEventListener('submit', function(event) {
       event.preventDefault();
-
-      const patientId = document.querySelector('#patient-id').value;
+      
       const name = document.querySelector('#name').value;
       const age = document.querySelector('#age').value;
       const gender = document.querySelector('#gender').value;
@@ -163,7 +162,6 @@
       const consultation = document.querySelector('#consultation').value;
       
       const patientData = {
-        id_pasien: patientId,
         nama_pasien: name,
         umur: age,
         jenis_kelamin: gender,
