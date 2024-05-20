@@ -34,7 +34,7 @@
         <span class="font-bold text-lg">Clinic Wangbrew</span>
       </div>
       <div class="flex items-center">
-        <button id="signOutButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Sign Out</button>
+        <button onclick="logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Sign Out</button>
       </div>
     </div>
   </nav>
@@ -81,9 +81,6 @@
         headers: {
           'Authorization': `Bearer ${token}`
         }
-
-      const signOutButton = document.getElementById('signOutButton');
-      signOutButton.addEventListener('click', logout);
 
       };
 
