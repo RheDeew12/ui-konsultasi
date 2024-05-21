@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <title>KLINIK DOKTER BAGYO</title>
   <style>
@@ -44,7 +44,7 @@
   </div>
 
   <a href="/input">
-    <button class="bg-green-500 hover:bg-green-700 text-whitefont-bold py-2 px-4 rounded ml-20">Add Patient</button>
+    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-20">Add Patient</button>
   </a>
 
   <div class="justify-center flex">
@@ -81,7 +81,6 @@
         headers: {
           'Authorization': `Bearer ${token}`
         }
-
       };
 
       async function fetchPatients() {
@@ -111,7 +110,7 @@
             row.appendChild(genderCell);
 
             const phoneCell = document.createElement('td');
-            phoneCell.textContent = data.no_telp_pasien;
+            phoneCell.textContent = data.no_telp;
             row.appendChild(phoneCell);
 
             const complainCell = document.createElement('td');
@@ -141,7 +140,7 @@
             deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-2', 'px-5', 'rounded', 'mt-2');
             deleteButton.addEventListener('click', async () => {
               try {
-               await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${data.id_pasien}`, config);
+                await axios.delete(`https://crud-data-dot-ammar-145.et.r.appspot.com/pasien/${data.id_pasien}`, config);
                 row.remove();
                 alert('Patient deleted successfully');
               } catch (error) {
