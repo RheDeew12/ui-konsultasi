@@ -69,6 +69,11 @@
   </div>
 
   <script>
+    function logout() {
+      localStorage.removeItem('authToken');
+      window.location.href = '/'; // Redirect to the login page
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
       const token = localStorage.getItem('authToken');
 
@@ -161,16 +166,6 @@
       }
 
       fetchPatients();
-
-      function logout() {
-        localStorage.removeItem('authToken');
-        window.location.href = '/'; // Redirect to the login page
-      }
-      
-      if (!localStorage.getItem('authToken')) {
-      window.location.href = '/';
-      }
-      
     });
   </script>
 </body>
