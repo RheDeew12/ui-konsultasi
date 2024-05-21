@@ -34,7 +34,7 @@
         <span class="font-bold text-lg">Clinic Wangbrew</span>
       </div>
       <div class="flex items-center">
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="logout()">Log Out</button>
+        <span id="logout-text" class="cursor-pointer hover:text-red-500 font-bold">Log Out</span>
       </div>
     </div>
   </nav>
@@ -162,15 +162,20 @@
 
       fetchPatients();
 
-      function logout() {
-        localStorage.removeItem('authToken');
-        window.location.href = '/'; // Redirect to the login page
+    function logout() {
+      localStorage.removeItem('authToken');
+      window.location.href = '/'; // Redirect to the login page
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      document.getElementById('logout-text').addEventListener('click', logout);
+
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        window.location.href = '/';
+        return;
       }
-      
-      if (!localStorage.getItem('authToken')) {
-      window.location.href = '/';
-      }
-      
     });
   </script>
 </body>
