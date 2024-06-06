@@ -92,6 +92,7 @@
         try {
           const response = await axios.get('https://crud-data-dot-ammar-145.et.r.appspot.com/pasien', config);
           const dataList = response.data;
+          console.log('data',dataList);
           const tbody = document.querySelector('#patient-list');
           tbody.innerHTML = ''; // Clear the element before adding data
 
